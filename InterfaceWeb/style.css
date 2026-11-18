@@ -1,0 +1,494 @@
+
+/* ========================================
+   keycube — Simulateur de frappe
+   ======================================== */
+
+:root {
+    --background: #0b0f14;
+    --panel: #141b24;
+    --panel-light: #1b2531;
+    --border: #293747;
+
+    --text: #e7edf5;
+    --muted: #8292a5;
+
+    --accent: #65e6c0;
+    --accent-dark: #173e37;
+
+    --terminal-bg: rgba(10, 20, 25, 0.88);
+
+    --chroma-green: #00ff00;
+}
+
+/* Réinitialisation */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ========================================
+   Structure principale
+   ======================================== */
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ========================================
+   Panneau de configuration
+   ======================================== */
+
+.controls {
+    width: 340px;
+    min-width: 340px;
+    padding: 28px 24px;
+
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-icon {
+    color: var(--accent);
+    font-size: 34px;
+}
+
+.brand h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.brand p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.control-group > label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Texte personnalisé */
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 14px;
+
+    resize: vertical;
+
+    background: var(--background);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Vitesse de frappe */
+
+.speed-header,
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+}
+
+.speed-header {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+#speedValue {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.range-labels {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* Boutons */
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 12px 16px;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    filter: brightness(1.15);
+}
+
+.primary {
+    flex: 1;
+    background: var(--accent);
+    color: #07130f;
+}
+
+.secondary {
+    flex: 1;
+    background: var(--panel-light);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.capture-btn {
+    width: 100%;
+
+    background: transparent;
+    color: var(--accent);
+
+    border: 1px solid var(--accent);
+}
+
+/* Raccourcis */
+
+.shortcuts {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.shortcuts h3 {
+    margin: 0 0 18px;
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.shortcuts > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    font-size: 12px;
+    color: var(--muted);
+}
+
+kbd {
+    padding: 5px 8px;
+    border-radius: 5px;
+
+    background: var(--panel-light);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    font-family: monospace;
+}
+
+/* ========================================
+   Prévisualisation
+   ======================================== */
+
+.preview {
+    flex: 1;
+    min-width: 0;
+
+    padding: 32px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.preview-header,
+.preview-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.preview-header p {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.preview-badge {
+    padding: 7px 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.preview-footer {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* ========================================
+   Surface de capture
+   ======================================== */
+
+.capture-surface {
+    flex: 1;
+    min-height: 450px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #1d3034 0%,
+            #0a1118 65%
+        );
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+/* ========================================
+   Terminal virtuel
+   ======================================== */
+
+.terminal {
+    width: min(800px, 100%);
+    min-height: 340px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--terminal-bg);
+
+    border: 1px solid rgba(101, 230, 192, 0.5);
+    border-radius: 10px;
+
+    box-shadow:
+        0 0 35px rgba(101, 230, 192, 0.08),
+        inset 0 0 30px rgba(101, 230, 192, 0.03);
+
+    overflow: hidden;
+}
+
+.terminal-header {
+    height: 50px;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: rgba(101, 230, 192, 0.07);
+
+    border-bottom:
+        1px solid rgba(101, 230, 192, 0.2);
+
+    font-family: Consolas, monospace;
+    font-size: 12px;
+
+    color: var(--accent);
+}
+
+.terminal-symbol {
+    font-size: 18px;
+}
+
+.terminal-status {
+    margin-left: auto;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 28px;
+
+    color: var(--accent);
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 22px;
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.cursor {
+    display: inline-block;
+    color: var(--accent);
+
+    animation: cursorBlink 1s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+    0%, 49% {
+        opacity: 1;
+    }
+
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+.terminal-footer {
+    padding: 13px 20px;
+
+    display: flex;
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(101, 230, 192, 0.15);
+
+    color: rgba(101, 230, 192, 0.5);
+
+    font-family: Consolas, monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+/* ========================================
+   Mode capture
+   ======================================== */
+
+body.capture-mode {
+    background: var(--chroma-green);
+    overflow: hidden;
+}
+
+.capture-mode .controls,
+.capture-mode .preview-header,
+.capture-mode .preview-footer {
+    display: none;
+}
+
+.capture-mode .app {
+    min-height: 100vh;
+}
+
+.capture-mode .preview {
+    width: 100%;
+    height: 100vh;
+
+    padding: 0;
+    gap: 0;
+}
+
+.capture-mode .capture-surface {
+    width: 100%;
+    height: 100vh;
+    min-height: 0;
+
+    padding: 40px;
+
+    background: var(--chroma-green);
+
+    border: none;
+    border-radius: 0;
+}
+
+.capture-mode .terminal {
+    width: 800px;
+    max-width: 90vw;
+}
+
+/* ========================================
+   Adaptation petits écrans
+   ======================================== */
+
+@media (max-width: 900px) {
+
+    .app {
+        flex-direction: column;
+    }
+
+    .controls {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .preview {
+        padding: 20px;
+    }
+
+    .capture-surface {
+        min-height: 400px;
+        padding: 20px;
+    }
+
+    .terminal-body {
+        font-size: 17px;
+    }
+
+    .preview-footer {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+}
