@@ -1,158 +1,56 @@
-
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>keycube — Simulateur de frappe</title>
-
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keycube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+<main>
+  <h1>keycube</h1>
 
-    <div class="app">
+  <label for="input">Your text</label>
+  <textarea id="input" placeholder="Type something here…"></textarea>
+  <div class="hint">Press Ctrl/⌘ + Enter to type it out.</div>
 
-        <!-- Panneau de configuration -->
-        <aside class="controls">
-
-            <div class="brand">
-                <span class="brand-icon">▣</span>
-                <div>
-                    <h1>keycube</h1>
-                    <p>Simulateur de frappe</p>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label for="textInput">
-                    Texte à afficher
-                </label>
-
-                <textarea
-                    id="textInput"
-                    rows="8"
-                    spellcheck="false"
-                    placeholder="Entrez votre texte..."
-                >Hello world!</textarea>
-            </div>
-
-            <div class="control-group">
-                <label for="speedInput">
-                    Vitesse de frappe
-                </label>
-
-                <div class="speed-header">
-                    <span>Intervalle par caractère</span>
-                    <span id="speedValue">50 ms</span>
-                </div>
-
-                <input
-                    type="range"
-                    id="speedInput"
-                    min="10"
-                    max="300"
-                    step="10"
-                    value="50"
-                >
-
-                <div class="range-labels">
-                    <span>Rapide</span>
-                    <span>Lent</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label for="backgroundSelect">
-                    Couleur du fond
-                </label>
-
-                <select id="backgroundSelect">
-                    <option value="green">
-                        Vert (Chroma Key)
-                    </option>
-                    <option value="blue">
-                        Bleu (Chroma Key)
-                    </option>
-                </select>
-            </div>
-
-            <div class="control-group">
-                <label>Commandes</label>
-
-                <div class="button-group">
-                    <button id="startBtn" class="primary">
-                        Démarrer
-                    </button>
-
-                    <button id="resetBtn" class="secondary">
-                        Réinitialiser
-                    </button>
-                </div>
-
-                <button id="captureBtn" class="capture-btn">
-                    Mode capture
-                </button>
-            </div>
-
-            <div class="shortcuts">
-                <h3>Raccourcis clavier</h3>
-
-                <div>
-                    <span>Démarrer / Pause</span>
-                    <kbd>Espace</kbd>
-                </div>
-
-                <div>
-                    <span>Réinitialiser</span>
-                    <kbd>R</kbd>
-                </div>
-
-                <div>
-                    <span>Quitter la capture</span>
-                    <kbd>Échap</kbd>
-                </div>
-            </div>
-
-        </aside>
-
-        <!-- Zone de prévisualisation -->
-        <main class="preview">
-
-            <div class="preview-header">
-                <div>
-                    <h2>Prévisualisation</h2>
-                    <p>Simulation de frappe keycube</p>
-                </div>
-
-                <span class="preview-badge">
-                    LIVE PREVIEW
-                </span>
-            </div>
-
-            <!-- Surface enregistrable -->
-            <div class="capture-surface">
-
-                <div class="typing-display">
-                    <span id="terminalText"></span><span
-                        id="cursor"
-                        class="cursor"
-                    >▋</span>
-                </div>
-
-            </div>
-
-            <div class="preview-footer">
-                <span>Capture compatible avec OBS</span>
-                <span>1920 × 1080 recommandé</span>
-            </div>
-
-        </main>
-
+  <div class="row">
+    <button id="go">Type it</button>
+    <button id="clear" class="secondary">Clear</button>
+    <label class="check"><input type="checkbox" id="record"> Record video</label>
+    <select id="size">
+      <option value="1920x1080">1920 × 1080 (horizontal)</option>
+      <option value="1080x1920">1080 × 1920 (vertical)</option>
+    </select>
+    <select id="bg">
+      <option value="#00FF00">Green screen</option>
+      <option value="#0000FF">Blue screen</option>
+    </select>
+    <label class="check">Text color <input type="color" id="color" value="#ffffff"></label>
+    <div class="speed">
+      <label for="speed" style="margin:0">Speed</label>
+      <input type="range" id="speed" min="10" max="200" value="60">
     </div>
+    <div class="speed">
+      <label for="textsize" style="margin:0">Text size</label>
+      <input type="range" id="textsize" min="40" max="200" value="80">
+    </div>
+  </div>
 
+  <label>Output</label>
+  <canvas id="output" width="1920" height="1080"></canvas>
+  <div id="status" class="status"></div>
+
+  <div id="result">
+    <label>Recording</label>
+    <video id="preview" controls playsinline></video>
+    <a id="download" href="#">Download video</a>
+    <div class="hint">If the download doesn't start here, open the .html file directly in your browser.</div>
+  </div>
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
